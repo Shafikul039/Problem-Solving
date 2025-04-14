@@ -1,0 +1,31 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define ll unsigned long long
+const ll N = 1e6 + 7;
+vector<ll> cnt(N, 0), ck (N, 0);
+
+int main() {
+    ll n; cin >> n;
+    vector <ll> a(n);
+    for (auto &u: a) cin >> u, cnt[u]++;
+    cnt[1] = n;
+    for (ll i = 2; i <= 1e6; i++) {
+        for (ll j = 2LL * i; j <= 1e6; j += i) {
+            cnt[i] += cnt[j];
+        }
+    }
+    for (ll i = 1; i <= 1e6; i++) {
+        if (cnt[i] >= 2) {
+            ll tmp = cnt[i] * (cnt[i] - 1) / 2LL;
+            ck[i] = tmp;
+        }
+    }
+
+    for (ll i = 1e6; i >= 1; i--) {
+        for (ll j = 2LL * i; j <= 1e6; j += i) {
+            ck[i] -= ck[j];
+        }
+    }
+    
+    cout << ck[1] << endl;
+}
