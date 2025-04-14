@@ -1,0 +1,69 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+const ll M = 1e9+7;
+bool ok = false;
+ll bigmod(ll a, ll b) {
+    ll ans=1;
+    a = a % M;
+    while (b) {
+        if (b & 1) {
+            ans = (ans * a) % M;
+        }
+        b >>= 1;
+        a = (a * a) % M;
+    }
+    return ans;
+}
+ 
+ll num_of_divisors (vector< pair<ll,ll> > &prime_factors) {
+	ll ans = 1;
+ 
+	for (auto &i: prime_factors) ans *= (i.second + 1), ans %= M;
+	return ans;
+}
+ 
+ll sum_of_divisors (vector< pair<ll,ll> > &prime_factors) {
+	ll ans = 1;
+ 
+	for (auto &i: prime_factors) {
+		ll p = i.first, e = i.second;
+		ll sum = bigmod(p, e + 1);
+		sum = (sum - 1 + M) % M;
+		ll denom = bigmod(p - 1, M - 2);
+		sum = (sum * denom) % M;
+		ans = (ans * sum) % M;
+	}
+	return ans;
+}
+ 
+ll pro_of_divisors (vector< pair<ll,ll> > &prime_factors) {
+	ll n = 1, d = 1, ans;
+    ll c = 1;
+	for (auto &i: prime_factors) {
+		ll p = i.first, e = i.second;
+        
+ 
+		if (ok && c && e % 2 == 1) {
+            d = (d * ((e + 1) / 2) ) % (M - 1); 
+            c = 0;
+        }
+        else d = (d * (e + 1)) % (M - 1);
+		if (ok) n = (n * bigmod(p, e)) % M;
+		else n = (n * bigmod(p, e / 2)) % M;
+	}
+    //cout << n << " " << d << endl;
+	ans = bigmod(n, d);
+	return ans;
+}
+ 
+int main() {
+	ll n; cin >> n;
+	vector< pair<ll,ll> > a(n);
+	for (auto &i: a) {
+		cin >> i.first >> i.second;
+		if (i.second % 2 == 1) ok = true;
+	}
+	cout << num_of_divisors(a) << " " << sum_of_divisors(a) << " " << pro_of_divisors(a) << endl;
+ 
+}
