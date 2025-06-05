@@ -39,20 +39,20 @@ ll sum_of_divisors (vector< pair<ll,ll> > &prime_factors) {
  
 ll pro_of_divisors (vector< pair<ll,ll> > &prime_factors) {
 	ll n = 1, d = 1, ans;
-    ll c = 1;
+    	ll c = 1;
 	for (auto &i: prime_factors) {
 		ll p = i.first, e = i.second;
         
- 
 		if (ok && c && e % 2 == 1) {
-            d = (d * ((e + 1) / 2) ) % (M - 1); 
-            c = 0;
-        }
-        else d = (d * (e + 1)) % (M - 1);
+            		d = (d * ((e + 1) / 2) ) % (M - 1); 
+            		c = 0;
+        	}
+        	else d = (d * (e + 1)) % (M - 1);
+
 		if (ok) n = (n * bigmod(p, e)) % M;
 		else n = (n * bigmod(p, e / 2)) % M;
 	}
-    //cout << n << " " << d << endl;
+    	//cout << n << " " << d << endl;
 	ans = bigmod(n, d);
 	return ans;
 }
